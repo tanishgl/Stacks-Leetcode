@@ -9,17 +9,13 @@ class Solution {
             if(ch=='('){
                 st.push(i);
             } else if (ch==')'){
-                if(st.size()==0 || s.charAt(st.peek())==')'){
-                    st.push(i);
-                } else {
+                if(st.size()>0 && s.charAt(st.peek())=='(')
                     st.pop();
-                    if(st.size()>0){
-                        ans = Math.max(ans, s.substring(st.peek()+1,i+1).length());
-                    } else {
-                        ans = Math.max(ans, i+1);
-                    }
-                }
+                else st.push(i);
             }
+            
+            int j = (st.size()==0) ? -1 : st.peek();
+            ans = Math.max(ans, i - j);
         }
         
         return ans;
