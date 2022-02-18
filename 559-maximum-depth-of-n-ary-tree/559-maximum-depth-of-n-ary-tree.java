@@ -20,9 +20,6 @@ class Node {
 class Solution {
     public int maxDepth(Node root) {
         if(root==null) return 0;
-        if(root.children == null){
-            return 1;
-        }
         
         int ans = 0;
         
