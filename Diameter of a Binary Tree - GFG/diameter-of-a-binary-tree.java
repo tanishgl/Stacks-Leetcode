@@ -115,21 +115,27 @@ class GfG {
 }*/
 
 class Solution {
-    int helper(Node root, int[] arr){
-        if(root==null) return 0;
+    
+    static class Pair{
+        int height = 0;
+        int diameter = 0;
+    }
+    
+    Pair helper(Node root){
+        if(root==null) return new Pair();
         
-        int lh = helper(root.left, arr);
-        int rh = helper(root.right, arr);
+        Pair left = helper(root.left);
+        Pair right = helper(root.right);
         
-        arr[0] = Math.max(arr[0], lh+rh+1);
+        Pair curr = new Pair();
+        curr.height = 1 + Math.max(left.height, right.height);
+        curr.diameter = Math.max(1+left.height+right.height, Math.max(left.diameter, right.diameter));
         
-        return 1 + Math.max(lh,rh);
+        return curr;
     }
     
     int diameter(Node root) {
-       if(root==null) return 0;
-       int[] arr = new int[1];
-       helper(root, arr);
-       return arr[0];
+        if(root==null) return 0;
+        return helper(root).diameter;
     }
 }
