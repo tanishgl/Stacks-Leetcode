@@ -129,26 +129,32 @@ class Node
 class Tree
 {
     
-    public boolean flag = true;
-    
-    int helper(Node root){
-        if(root==null) return 0;
-        
-        int lh = helper(root.left);
-        int rh = helper(root.right);
-        
-        int diff = Math.abs(lh-rh);
-        
-        flag = flag && diff>=-1 && diff<=1;
-        
-        return 1 + Math.max(lh,rh);
-        
+    static class Pair{
+        int height = 0;
+        boolean flag = true;
     }
+    
+    Pair helper(Node root){
+        if(root==null) return new Pair();
+        
+        Pair left = helper(root.left);
+        Pair right = helper(root.right);
+        
+        Pair curr = new Pair();
+        curr.height = 1 + Math.max(left.height, right.height);
+        int diff = Math.abs(left.height - right.height);
+        
+        curr.flag = left.flag && right.flag && diff>=-1 && diff<=1;
+        
+        return curr;
+    }
+    
+    //Function to check whether a binary tree is balanced or not.
     boolean isBalanced(Node root)
     {
 	    if(root==null) return true;
-	    helper(root);
-	    return flag;
+	    
+	    return helper(root).flag;
     }
 }
 
