@@ -115,20 +115,22 @@ class GfG {
 }*/
 
 class Solution {
-    // Function to return the diameter of a Binary Tree.
+    public int globalDiameter = 0;
     
-    int height(Node root){
+    int helper(Node root){
         if(root==null) return 0;
         
-        return 1 + Math.max(height(root.left),height(root.right));
+        int lh = helper(root.left);
+        int rh = helper(root.right);
+        
+        globalDiameter = Math.max(globalDiameter, lh+rh+1);
+        
+        return 1 + Math.max(lh,rh);
     }
     
     int diameter(Node root) {
-        if(root == null) return 0;
-        
-        int lh = height(root.left);
-        int rh = height(root.right);
-        
-        return Math.max(lh+rh+1, Math.max(diameter(root.left), diameter(root.right)));
+       if(root==null) return 0;
+       helper(root);
+       return globalDiameter;
     }
 }
