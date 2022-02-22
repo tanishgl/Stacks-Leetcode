@@ -115,22 +115,21 @@ class GfG {
 }*/
 
 class Solution {
-    public int globalDiameter = 0;
-    
-    int helper(Node root){
+    int helper(Node root, int[] arr){
         if(root==null) return 0;
         
-        int lh = helper(root.left);
-        int rh = helper(root.right);
+        int lh = helper(root.left, arr);
+        int rh = helper(root.right, arr);
         
-        globalDiameter = Math.max(globalDiameter, lh+rh+1);
+        arr[0] = Math.max(arr[0], lh+rh+1);
         
         return 1 + Math.max(lh,rh);
     }
     
     int diameter(Node root) {
        if(root==null) return 0;
-       helper(root);
-       return globalDiameter;
+       int[] arr = new int[1];
+       helper(root, arr);
+       return arr[0];
     }
 }
