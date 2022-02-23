@@ -28,12 +28,20 @@ class Solution {
         if(head==null) return true;
         if(root==null) return false;
         
-        return fromMe(head, root) || isSubPath(head, root.left) || isSubPath(head, root.right);
+        return helper(head, root) || isSubPath(head, root.left) || isSubPath(head, root.right);
     }
     
-    public boolean fromMe(ListNode head, TreeNode root){
+    public boolean helper(ListNode head, TreeNode root){
         if(head==null) return true;
         if(root==null) return false;
-        return (head.val == root.val) && (fromMe(head.next, root.left) || fromMe(head.next, root.right));
+        
+        if(root.val == head.val){
+            if(helper(head.next, root.left)==true)
+                return true;
+            if(helper(head.next, root.right)==true)
+                return true;
+        }
+        
+        return false;
     }
 }
