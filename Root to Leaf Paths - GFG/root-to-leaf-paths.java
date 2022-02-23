@@ -134,44 +134,30 @@ class Node{
 */
 class Tree{
     public ArrayList<ArrayList<Integer>> Paths(Node root){
-        return function(root);
+       ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+       ArrayList<Integer> path = new ArrayList<>();
+       helper(root, path, ans);
+       return ans;
     }
     
-    public ArrayList<ArrayList<Integer>> function(Node root){
-        if(root==null) return new ArrayList<ArrayList<Integer>>();
+    void helper(Node root, ArrayList<Integer> path, ArrayList<ArrayList<Integer>> paths){
+        if(root==null){
+            return;
+        }
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        for(int val : path){
+            res.add(val);
+        }
+        res.add(root.data);
         
         if(root.left==null && root.right==null){
-            ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
-            ArrayList<Integer> base = new ArrayList<>();
-            base.add(root.data);
-            ans.add(base);
-            return ans;
+            paths.add(res);
+            return;
         }
         
-        ArrayList<ArrayList<Integer>> fans = new ArrayList<>();
-        
-        ArrayList<ArrayList<Integer>> left = function(root.left);
-        ArrayList<ArrayList<Integer>> right = function(root.right);
-        
-        for(int i=0;i<left.size();i++){
-            ArrayList<Integer> res = new ArrayList<>();
-            res.add(root.data);
-            for(int j=0;j<left.get(i).size();j++){
-                res.add(left.get(i).get(j));
-            }
-            fans.add(res);
-        }
-        
-        for(int i=0;i<right.size();i++){
-            ArrayList<Integer> res = new ArrayList<>();
-            res.add(root.data);
-            for(int j=0;j<right.get(i).size();j++){
-                res.add(right.get(i).get(j));
-            }
-            fans.add(res);
-        }
-        
-        return fans;
+        helper(root.left, res, paths);
+        helper(root.right, res, paths);
         
     }
     
