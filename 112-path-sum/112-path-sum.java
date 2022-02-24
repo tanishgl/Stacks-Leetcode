@@ -15,24 +15,34 @@
  */
 class Solution {
     
-    boolean flag = false;
+//     boolean flag = false;
     
-    public void helper(TreeNode root, int target){
-        if(root==null) return;
+//     public void helper(TreeNode root, int target){
+//         if(root==null) return;
+        
+//         if(root.left==null && root.right==null){
+//             flag = flag || (root.val == target);
+//             return;
+//         }
+        
+//         helper(root.left, target - root.val);
+//         helper(root.right, target - root.val);
+//     }
+    
+//     public boolean hasPathSum(TreeNode root, int targetSum) {
+//         if(root==null) return false;
+//         helper(root, targetSum);
+//         return flag;
+//     }
+    
+    public boolean hasPathSum(TreeNode root, int targetSum){
+        if(root==null) return false;
         
         if(root.left==null && root.right==null){
-            System.out.println(root.val + " " + target);
-            flag = flag || (root.val == target);
-            return;
+            //leaf node.
+            return root.val==targetSum;
         }
         
-        helper(root.left, target - root.val);
-        helper(root.right, target - root.val);
-    }
-    
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        if(root==null) return false;
-        helper(root, targetSum);
-        return flag;
+        return hasPathSum(root.left, targetSum-root.val) || hasPathSum(root.right, targetSum-root.val);
     }
 }
