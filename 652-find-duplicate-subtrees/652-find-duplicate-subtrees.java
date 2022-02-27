@@ -27,14 +27,12 @@ class Solution {
         if(root == null) return "#,";
         
         String serial = root.val + "," + preSerialize(root.left) + preSerialize(root.right);
-        if(hm.getOrDefault(serial, 0) == 0){
-            hm.put(serial, 1);
-        } else {
-            if(hm.get(serial)==1){
-                result.add(root);
-            }
-            hm.put(serial, hm.get(serial) + 1);
+        
+        if(hm.containsKey(serial) == true && hm.get(serial) == 1){
+            result.add(root);
         }
+        
+        hm.put(serial, hm.getOrDefault(serial, 0) + 1);
         
         return serial;
     }
