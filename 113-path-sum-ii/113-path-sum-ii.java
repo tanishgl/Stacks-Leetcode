@@ -14,31 +14,35 @@
  * }
  */
 class Solution {
+    List<List<Integer>> res;
+    List<Integer> container;
+    
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-        List<List<Integer>> paths = new ArrayList<>();
-        List<Integer> path = new ArrayList<>();
-        helper(root, paths, path, targetSum);
-        return paths;
+        res = new ArrayList<>();
+        container = new ArrayList<>();
+        helper(root, targetSum, container);
+        return res;
     }
     
-    public void helper(TreeNode root, List<List<Integer>> paths, List<Integer> path, int targetSum){
+    public void helper(TreeNode root, int targetSum, List<Integer> container){
         if(root==null) return;
         
-        if(root.left==null && root.right==null && root.val==targetSum){
-            List<Integer> ans = new ArrayList<>();
-            for(int val : path)
-                ans.add(val);
-            ans.add(root.val);
-            paths.add(ans);
+        container.add(root.val);
+        
+        if(root.left==null && root.right==null){
+            if(root.val == targetSum){
+                List<Integer> copy = new ArrayList<>();
+                for(int val : container)
+                    copy.add(val);
+                res.add(copy);
+            } 
+            
+            container.remove(container.size()-1);
             return;
         }
         
-        path.add(root.val);
-            
-        helper(root.left, paths, path, targetSum-root.val);
-        helper(root.right, paths, path, targetSum-root.val);
-        
-        path.remove(path.size()-1);
-
+        helper(root.left, targetSum-root.val, container);
+        helper(root.right, targetSum-root.val, container);
+        container.remove(container.size()-1);
     }
 }
