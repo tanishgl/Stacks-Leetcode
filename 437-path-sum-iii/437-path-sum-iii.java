@@ -14,8 +14,13 @@
  * }
  */
 class Solution {
+    public int pathSum(TreeNode root, int targetSum) {
+        if(root==null) return 0;
+        
+        return pathSum(root.left, targetSum) + pathSum(root.right, targetSum) + fromMe(root, targetSum);
+    }
     
-    public int mySum(TreeNode root, int targetSum){
+    public int fromMe(TreeNode root, int targetSum){
         if(root==null) return 0;
         
         int count = 0;
@@ -23,13 +28,8 @@ class Solution {
         if(root.val == targetSum)
             count++;
         
-        return count + mySum(root.left, targetSum-root.val) + mySum(root.right, targetSum - root.val);
-    }
-    
-    public int pathSum(TreeNode root, int targetSum) {
-        if(root==null) return 0;
-        
-        return mySum(root, targetSum) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
-        
+        count += fromMe(root.left, targetSum - root.val);
+        count += fromMe(root.right, targetSum - root.val);
+        return count;
     }
 }
