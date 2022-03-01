@@ -14,22 +14,29 @@
  * }
  */
 class Solution {
+    int totalSum = 0;
+    HashMap<Integer, Integer> hm;
+    
     public int pathSum(TreeNode root, int targetSum) {
-        if(root==null) return 0;
-        
-        return pathSum(root.left, targetSum) + pathSum(root.right, targetSum) + fromMe(root, targetSum);
+        hm = new HashMap<>();
+        hm.put(0,1);
+        return helper(root, targetSum);
     }
     
-    public int fromMe(TreeNode root, int targetSum){
+    public int helper(TreeNode root, int targetSum){
         if(root==null) return 0;
         
-        int count = 0;
+        totalSum += root.val;
         
-        if(root.val == targetSum)
-            count++;
+        int count = hm.getOrDefault(totalSum - targetSum, 0);
+        hm.put(totalSum, hm.getOrDefault(totalSum, 0) + 1);
         
-        count += fromMe(root.left, targetSum - root.val);
-        count += fromMe(root.right, targetSum - root.val);
+        count += helper(root.left, targetSum) + helper(root.right, targetSum);
+        
+        hm.put(totalSum, hm.getOrDefault(totalSum, 0) - 1);
+        
+        totalSum -= root.val;
+        
         return count;
     }
 }
