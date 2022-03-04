@@ -23,25 +23,25 @@ class GFG{
 
 class Solution{
     static int maxLength(String S){
+        int ans = 0 , open = 0;
         Stack<Integer> st = new Stack<>();
-        int ans = Integer.MIN_VALUE;
         
         for(int i=0;i<S.length();i++){
             char ch = S.charAt(i);
-            
             if(ch=='('){
+                open++;
                 st.push(i);
             } else {
-                if(st.size()>0 && S.charAt(st.peek())=='('){
+                if(open>0){
+                    open--;
                     st.pop();
                 } else {
                     st.push(i);
                 }
             }
             
-            //idx is index after which the string is valid.
-            int idx = (st.size()>0) ? st.peek() : -1;
-            ans = Math.max(ans, i - idx);
+            int now_length = (st.size()==0) ? (i+1) : (i-st.peek());
+            ans = Math.max(now_length, ans);
         }
         
         return ans;
