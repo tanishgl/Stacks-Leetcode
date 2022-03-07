@@ -21,25 +21,27 @@ class Solution {
     public List<List<Integer>> levelOrder(Node root) {
         List<List<Integer>> res = new ArrayList<>();
         if(root==null) return res;
-        Queue<Node> mainQ = new ArrayDeque<>();
-        mainQ.add(root);
-        Queue<Node> childQ = new ArrayDeque<>();
+        
+        Queue<Node> mainq = new ArrayDeque<>();
+        mainq.add(root);
+        mainq.add(new Node(-1));
+        
         List<Integer> level = new ArrayList<>();
         
-        while(mainQ.size()>0){
-            Node curr = mainQ.remove();
-            level.add(curr.val);
-            for(Node child : curr.children){
-                childQ.add(child);
-            }
-            if(mainQ.size()==0){
+        while(mainq.size()>0){
+            Node curr = mainq.remove();
+            if(curr.val == -1){
                 res.add(level);
+                if(mainq.size()==0) return res;
                 level = new ArrayList<>();
-                while(childQ.size()>0)
-                    mainQ.add(childQ.remove());
+                mainq.add(new Node(-1));
+            } else {
+                level.add(curr.val);
+                for(Node child : curr.children)
+                    mainq.add(child);
             }
         }
         
-        return res;
+        return null;
     }
 }
