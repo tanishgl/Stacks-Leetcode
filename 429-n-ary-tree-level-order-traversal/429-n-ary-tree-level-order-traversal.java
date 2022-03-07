@@ -22,26 +22,43 @@ class Solution {
         List<List<Integer>> res = new ArrayList<>();
         if(root==null) return res;
         
-        Queue<Node> mainq = new ArrayDeque<>();
-        mainq.add(root);
-        mainq.add(new Node(-1));
+        Queue<Node> q = new ArrayDeque<>();
+        q.add(root);
         
-        List<Integer> level = new ArrayList<>();
-        
-        while(mainq.size()>0){
-            Node curr = mainq.remove();
-            if(curr.val == -1){
-                res.add(level);
-                if(mainq.size()==0) return res;
-                level = new ArrayList<>();
-                mainq.add(new Node(-1));
-            } else {
+        while(q.size()>0){
+            int size = q.size();
+            List<Integer> level = new ArrayList<>();
+            
+            while(size-->0){
+                Node curr = q.remove();
                 level.add(curr.val);
-                for(Node child : curr.children)
-                    mainq.add(child);
+                for(Node child : curr.children){
+                    q.add(child);
+                }
             }
+            res.add(level);
         }
         
-        return null;
+//         Queue<Node> mainq = new ArrayDeque<>();
+//         mainq.add(root);
+//         mainq.add(new Node(-1));
+        
+//         List<Integer> level = new ArrayList<>();
+        
+//         while(mainq.size()>0){
+//             Node curr = mainq.remove();
+//             if(curr.val == -1){
+//                 res.add(level);
+//                 if(mainq.size()==0) return res;
+//                 level = new ArrayList<>();
+//                 mainq.add(new Node(-1));
+//             } else {
+//                 level.add(curr.val);
+//                 for(Node child : curr.children)
+//                     mainq.add(child);
+//             }
+//         }
+        
+        return res;
     }
 }
