@@ -13,9 +13,7 @@ class Solution {
                     res = !(res);
                 } else {
                     while(expr.size()>0 && expr.peek()!='('){
-                        if(operation.peek()=='!'){
-                            res = !(res);
-                        } else if (operation.peek() == '&') {
+                        if (operation.peek() == '&') {
                             boolean a = (expr.pop() == 't') ? true : false;
                             res &= a;
                         } else if (operation.peek() == '|') {
