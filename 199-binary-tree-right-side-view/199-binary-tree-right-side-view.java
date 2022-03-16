@@ -22,16 +22,12 @@ class Solution {
         
         while(q.size()>0){
             int size = q.size();
-            TreeNode last = null;
+            ans.add(q.peek().val);
             while(size-->0){
                 TreeNode curr = q.remove();
-                if(size==0){
-                    last = curr;
-                }
-                if(curr.left!=null) q.add(curr.left);
                 if(curr.right!=null) q.add(curr.right);
+                if(curr.left!=null) q.add(curr.left);
             }
-            if(last!=null) ans.add(last.val);
         }
         
         return ans;
