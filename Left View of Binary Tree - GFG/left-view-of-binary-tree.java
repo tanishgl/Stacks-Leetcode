@@ -132,17 +132,12 @@ class Tree
       
       while(q.size()>0){
           int size = q.size();
-          int n = size;
-          Node first = null;
+          ans.add(q.peek().data);
           while(size-->0){
             Node curr = q.remove();
-             if(size == n-1){
-                 first = curr;
-             }
              if(curr.left!=null) q.add(curr.left);
              if(curr.right!=null) q.add(curr.right);
           }
-          if(first!=null) ans.add(first.data);
       }
       
       return ans;
