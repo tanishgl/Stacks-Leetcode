@@ -3,6 +3,7 @@ class MapSum {
     public static class Node {
         private Node[] children = new Node[26];
         private int value = 0;
+        public int prefix = 0;
         
         public boolean contains(char ch){
             return children[ch-'a'] != null;
@@ -31,25 +32,30 @@ class MapSum {
         root = new Node();
     }
     
+    public int search(String word){
+        Node curr = root;
+        for(int i=0;i<word.length();i++){
+            char ch = word.charAt(i);
+            if(!curr.contains(ch))
+                return 0;
+            curr = curr.get(ch);
+        }
+        return curr.getValue();
+    }
+    
     public void insert(String key, int val) {
+        int oldVal = search(key);
         Node curr = root;
         for(int i=0;i<key.length();i++){
+            curr.prefix += (val - oldVal);
             char ch = key.charAt(i);
             if(!curr.contains(ch))
                 curr.set(ch);
             curr = curr.get(ch);
         }
-        curr.setValue(val);
-    }
-    
-    public int dfs(Node curr){
-        int ans = 0;
-        for(char ch='a';ch<='z';ch++){
-            if(curr.contains(ch))
-                ans += dfs(curr.get(ch));
-        }
         
-        return ans + curr.getValue();
+        curr.prefix += (val - oldVal);
+        curr.setValue(val);
     }
     
     public int sum(String prefix) {
@@ -61,7 +67,7 @@ class MapSum {
             curr = curr.get(ch);
         }
         
-        return dfs(curr);
+        return curr.prefix;
     }
 }
 
