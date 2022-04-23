@@ -29,7 +29,7 @@ class Solution{
 	    if(N==2 || N==3) return 1;
 	    int[] dp = new int[N+1];
 	    dp[0] = 0;
-	    dp[1] = 1;
+	    dp[1] = 0;
 	    dp[2] = 1;
 	    dp[3] = 1;
 	    for(int i=4;i<=N;i++){
