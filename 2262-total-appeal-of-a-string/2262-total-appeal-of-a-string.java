@@ -1,25 +1,24 @@
 class Solution {
     public long appealSum(String s) {
         int n = s.length();
-        int[] dp = new int[n];
         HashMap<Character, Integer> map = new HashMap<>();
-        dp[n-1] = 1;
+        int next = 1;
         map.put(s.charAt(n-1), 1);
         int count = 1;
+        long res = 1l;
         
         for(int i=n-2;i>=0;i--){
-            dp[i] = 1 + count + dp[i+1];
-            if(map.containsKey(s.charAt(i))){
-                dp[i] -= map.get(s.charAt(i));
+            int ans = 1 + count + next;
+            char ch = s.charAt(i);
+            if(map.containsKey(ch)){
+                ans -= map.get(ch);
             }
             count++;
-            map.put(s.charAt(i), count);
+            map.put(ch, count);
+            next = ans;
+            res += next;
         }
         
-        long ans = 0l;
-        for(int val : dp)
-            ans += val;
-        
-        return ans;
+        return res;
     }
 }
