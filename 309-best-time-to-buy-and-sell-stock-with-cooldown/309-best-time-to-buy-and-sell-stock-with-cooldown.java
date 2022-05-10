@@ -1,22 +1,25 @@
 class Solution {
     public int maxProfit(int[] prices) {
         if(prices.length == 1) return 0;
-        int[] buy = new int[prices.length];
-        int[] sell = new int[prices.length];
         
-        buy[0] = prices[0] * -1;
-        sell[0] = 0;
-        buy[1] = Math.max(prices[1] * -1, buy[0]);
-        sell[1] = Math.max(sell[0], prices[1] + buy[0]);
+        int buy0 = prices[0] * -1;
+        int sell0 = 0;
+        int buy1 = Math.max(prices[1] * -1, buy0);
+        int sell1 = Math.max(sell0, prices[1] + buy0);
         
         for(int i=2;i<prices.length;i++){
             //Either buy today.
-            buy[i] = Math.max(buy[i-1], sell[i-2] - prices[i]);
+            int newBuy = Math.max(buy1, sell0 - prices[i]);
             
             //Or Sell today.
-            sell[i] = Math.max(sell[i-1], buy[i-1] + prices[i]);
+            int newSell = Math.max(sell1, buy1 + prices[i]);
+            
+            buy0 = buy1;
+            sell0 = sell1;
+            buy1 = newBuy;
+            sell1 = newSell;
         }
         
-        return sell[sell.length-1];
+        return sell1;
     }
 }
