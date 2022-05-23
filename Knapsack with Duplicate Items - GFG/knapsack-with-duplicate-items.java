@@ -37,11 +37,17 @@ class Solution{
         int[] dp = new int[W+1];
         dp[0] = 0;
         
-        for(int i=1;i<=W;i++){
-            for(int j=0;j<N;j++){
-                if(i-wt[j]>=0){
-                    dp[i] = Math.max(dp[i], val[j] + dp[i-wt[j]]);
-                }
+        // for(int i=1;i<=W;i++){
+        //     for(int j=0;j<N;j++){
+        //         if(i-wt[j]>=0){
+        //             dp[i] = Math.max(dp[i], val[j] + dp[i-wt[j]]);
+        //         }
+        //     }
+        // }
+        
+        for(int i=0;i<N;i++){
+            for(int j=1;j<=W;j++){
+                dp[j] = (j-wt[i]>=0) ? Math.max(dp[j], val[i] + dp[j-wt[i]]) : dp[j];
             }
         }
         
