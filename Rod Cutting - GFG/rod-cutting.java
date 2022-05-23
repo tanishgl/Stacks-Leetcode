@@ -24,11 +24,15 @@ class RodCutting {
 
 class Solution{
     public int cutRod(int price[], int n) {
+        //code here
         int[] dp = new int[n+1];
         dp[0] = 0;
+        
         for(int i=1;i<=n;i++){
-            for(int j=1;j<=price.length;j++){
-                dp[i] = (i - j >= 0) ? Math.max(dp[i], price[j-1] + dp[i-j]) : Math.max(dp[i], 0);
+            for(int j=1;j<=i;j++){
+                if(i-j >= 0){
+                    dp[i] = Math.max(dp[i], price[j-1] + dp[i-j]);
+                }
             }
         }
         
