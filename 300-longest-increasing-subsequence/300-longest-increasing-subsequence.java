@@ -1,20 +1,33 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int[] dp = new int[nums.length];
-    
-        for(int i=0;i<nums.length;i++){
-            dp[i] = 1;
-            for(int j=i-1;j>=0;j--){
-                if(nums[i] > nums[j]){
-                    dp[i] = Math.max(dp[i] , dp[j] + 1);
-                }
+        // Binary Search algorithm.
+        List<Integer> subs = new ArrayList<>();
+        subs.add(nums[0]);
+        
+        for(int i=1;i<nums.length;i++){
+            if(nums[i] > subs.get(subs.size()-1)){
+                subs.add(nums[i]);
+            } else {
+                int idx = lowerBound(subs, nums[i]);
+                subs.set(idx, nums[i]);
             }
         }
         
+        return subs.size();
+    }
+    
+    public int lowerBound(List<Integer> arr, int target){
+        int lo = 0, hi = arr.size()-1;
         int ans = 0;
         
-        for(int i=0;i<dp.length;i++){
-            ans = Math.max(dp[i], ans);
+        while(lo <= hi){
+            int mid = lo + (hi - lo) / 2;
+            if(arr.get(mid) >= target){
+                ans = mid;
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
         }
         
         return ans;
