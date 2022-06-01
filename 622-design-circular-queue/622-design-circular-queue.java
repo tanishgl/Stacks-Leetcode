@@ -1,17 +1,18 @@
 class MyCircularQueue {
     
     int[] arr;
-    int size = 0;
-    int front = 0, rear = 0;
+    int size, front, rear;
 
     public MyCircularQueue(int k) {
         arr = new int[k];
         size = 0;
+        rear = front = 0;
     }
     
     public boolean enQueue(int value) {
-        //Queue overflow
-        if(size==arr.length) return false;
+        if(size == arr.length){
+            return false;
+        }
         
         arr[rear] = value;
         rear = (rear + 1) % arr.length;
@@ -20,8 +21,9 @@ class MyCircularQueue {
     }
     
     public boolean deQueue() {
-        //Queue underflow
-       if(size==0) return false;
+        if(isEmpty()){
+            return false;
+        }
         
         front = (front + 1) % arr.length;
         size--;
@@ -29,23 +31,26 @@ class MyCircularQueue {
     }
     
     public int Front() {
-        if(size==0) return -1;
+        if(isEmpty())
+            return -1;
         
         return arr[front];
     }
     
     public int Rear() {
-        if(size==0) return -1;
+        if(isEmpty())
+            return -1;
         
-        return arr[(rear -1 + arr.length) % arr.length];
+        int idx = (rear - 1 + arr.length) % arr.length;
+        return arr[idx];
     }
     
     public boolean isEmpty() {
-        return (size==0);
+        return size == 0;
     }
     
     public boolean isFull() {
-        return (size == arr.length);
+        return size == arr.length;
     }
 }
 
