@@ -72,11 +72,14 @@ class MyStack
     int pop() 
     {
         if(head == null){
+            // stack Underflow
             return -1;
         }
         
+        int popped_val = top.data;
+        
         if(head.next == null){
-            int popped_val = head.data;
+            // For one-value stack
             head = null;
             return popped_val;
         }
@@ -87,8 +90,6 @@ class MyStack
             prev = curr;
             curr = curr.next;
         }
-
-        int popped_val = top.data;
         
         prev.next = null;
         top = prev;
