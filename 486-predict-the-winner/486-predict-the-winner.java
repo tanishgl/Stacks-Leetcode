@@ -10,11 +10,13 @@ class Solution {
         if(dp[left][right] != -1)
             return dp[left][right];
         
-        int c1 = helper(left + 2, right, arr, dp);
-        int c2 = helper(left + 1, right -1, arr, dp);
-        int c3 = helper(left, right - 2, arr, dp);
+//         int c1 = helper(left + 2, right, arr, dp);
+//         int c2 = helper(left + 1, right -1, arr, dp);
+//         int c3 = helper(left, right - 2, arr, dp);
         
-        return dp[left][right] = Math.max(arr[left] + Math.min(c1, c2), arr[right] + Math.min(c2, c3));
+//         return dp[left][right] = Math.max(arr[left] + Math.min(c1, c2), arr[right] + Math.min(c2, c3));
+        
+        return Math.max(arr[left] - helper(left+1, right, arr, dp), arr[right] - helper(left, right-1, arr, dp));
     }
     
     public boolean PredictTheWinner(int[] nums) {    
@@ -23,15 +25,19 @@ class Solution {
             Arrays.fill(dp[i], -1);
         }
         
-        int A = helper(0, nums.length-1, nums, dp);
+//         int A = helper(0, nums.length-1, nums, dp);
         
-        int total = 0;
-        for(int val : nums){
-            total += val;
-        }
+//         int total = 0;
+//         for(int val : nums){
+//             total += val;
+//         }
         
-        int B = total - A;
+//         int B = total - A;
         
-        return A >= B;
+//         return A >= B;
+        
+        int diff = helper(0, nums.length-1, nums, dp);
+        
+        return diff >= 0;
     }
 }
