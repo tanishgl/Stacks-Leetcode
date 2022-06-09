@@ -1,12 +1,7 @@
 class Solution {
     public int twoEggDrop(int n) {
-        int ans = 0, i = 1;
-        while(n>0){
-            ans++;
-            n -= i;
-            i++;
-        }
-        
-        return ans;
+        double ans = (-1.0 + Math.sqrt(1.0 + 8.0*n)) / 2.0;
+        if(ans == (int)ans) return (int)ans;
+        return (int)ans + 1;
     }
 }
