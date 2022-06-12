@@ -32,11 +32,27 @@ class Solution{
     {
         // code here
         int[][] dp = new int[N][N];
-        for(int i=0;i<N;i++){
-            Arrays.fill(dp[i], -1);
+        // for(int i=0;i<N;i++){
+        //     Arrays.fill(dp[i], -1);
+        // }
+        
+        // return partition(arr, 0, arr.length-2, dp);
+        
+        for(int gap=1;gap<N-1;gap++){
+            for(int l=0,r=gap; r<N-1; l++, r++){
+                int minCost = Integer.MAX_VALUE;
+                for(int k=l;k<r;k++){
+                    int left = dp[l][k];
+                    int right = dp[k+1][r];
+                    int cost = left + right + (arr[l] * arr[k+1] * arr[r+1]);
+                    minCost = Math.min(minCost, cost);
+                }
+                
+                dp[l][r] = minCost;
+            }
         }
         
-        return partition(arr, 0, arr.length-2, dp);
+        return dp[0][N-2];
     }
     
     static int partition(int[] arr, int l, int r, int[][] dp){
