@@ -23,9 +23,10 @@ class Solution {
             return 0;
         }
         
-        if(isPallindrome(s.substring(i))) return 0;
-        
         if(dp[i] != -1) return dp[i];
+        
+        if(isPallindrome(s.substring(i))) return dp[i] = 0;
+        
         
         int cuts = Integer.MAX_VALUE;
         
