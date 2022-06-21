@@ -16,16 +16,6 @@ class Solution {
             j--;
         }
         
-        while(i>=0){
-            str += num1.charAt(i);
-            i--;
-        }
-        
-        while(j>=0){
-            str += num2.charAt(j);
-            j--;
-        }
-        
         return new StringBuilder(str).reverse().toString();
     }
 }
