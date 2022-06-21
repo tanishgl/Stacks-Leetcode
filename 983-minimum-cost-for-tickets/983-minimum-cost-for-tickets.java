@@ -7,45 +7,37 @@ class Solution {
             int day = days[i];
             
             int cost1 = Integer.MAX_VALUE;
-            int cost7 = Integer.MAX_VALUE;
-            int cost30 = Integer.MAX_VALUE;
-            
-            // One - day pass.
-            if(i==n-1){
+            if(i == n-1)
                 cost1 = costs[0];
-            } else {
+            else 
                 cost1 = costs[0] + dp[i+1];
-            }
             
-            // Seven - day pass.
-            if(i==n-1){
+            
+            int cost7 = Integer.MAX_VALUE;
+            if(i == n-1)
                 cost7 = costs[1];
-            } else {
-                cost7 = costs[1];
-                int invalidDay = day + 7;
+            else {
                 int j = i + 1;
-                while(j < n && days[j] < invalidDay){
+                while(j < n && days[j] < day + 7)
                     j++;
-                }
-                cost7 += (j == n) ? 0 : dp[j];
+                cost7 = (j == n) ? costs[1] : dp[j] + costs[1];
             }
             
-            // Thirty - day pass.
-            if(i==n-1){
-                cost30 = costs[2];
-            } else {
-                cost30 = costs[2];
-                int invalidDay = day + 30;
+            
+            int cost3 = Integer.MAX_VALUE;
+            
+            if(i == n-1)
+                cost3 = costs[2];
+            else {
                 int j = i + 1;
-                while(j < n && days[j] < invalidDay)
+                while(j < n && days[j] < day + 30)
                     j++;
-                cost30 += (j == n) ? 0 : dp[j];
+                cost3 = (j == n) ? costs[2] : dp[j] + costs[2];
             }
             
-            dp[i] = Math.min(cost1, Math.min(cost7, cost30));
+            dp[i] = Math.min(cost1, Math.min(cost7, cost3));
         }
         
         return dp[0];
-        
     }
 }
