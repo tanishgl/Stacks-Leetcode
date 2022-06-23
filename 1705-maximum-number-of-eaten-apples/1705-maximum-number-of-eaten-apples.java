@@ -6,22 +6,18 @@ class Solution {
         // Iterate as long as carton is not empty or the tree still gives apples.
         
         while(day <= days.length || carton.size() > 0){
-            System.out.println(day);
             // 1. First add today's packet into the carton {apples, expiry}.
             if(day <= days.length){
                 carton.add(new int[]{apples[day-1], days[day-1] + day});
-                System.out.println("packet added");
             }
             
             // 2. Remove rotten and empty packets.
             while(carton.size() > 0 && (carton.peek()[0] <= 0 || carton.peek()[1] <= day)){
-                System.out.println("packet removed " + carton.peek()[0] + " " + carton.peek()[1]);
                 carton.remove();
             }
             
             // 3. Time to eat today's apple, if available.
             if(carton.size() > 0){
-                System.out.println("eaten");
                 count++;
                 int[] packet = carton.remove();
                 carton.add(new int[]{packet[0] - 1, packet[1]});
