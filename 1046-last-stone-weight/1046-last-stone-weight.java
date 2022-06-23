@@ -1,31 +1,21 @@
 class Solution {
     public int lastStoneWeight(int[] stones) {
-        Arrays.sort(stones);
-        int j = stones.length - 1;
-        int i = j - 1;
-        while(i>=0 && j>=0){
-            if(stones[i]==stones[j]){
-                i-=2;
-                j-=2;
-            } else {
-                stones[i] = stones[j] - stones[i];
-                insertionSort(stones, i);
-                i-=1;
-                j-=1;
-            }
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        
+        ArrayList<Integer> al = new ArrayList<>();
+        for(int val : stones)
+            al.add(val);
+        
+        maxHeap.addAll(al);
+        
+        while(maxHeap.size()>1){
+            int y = maxHeap.remove();
+            int x = maxHeap.remove();
+            if(x != y)
+                maxHeap.add(y - x);
         }
         
-        return (j>=0) ? stones[j] : 0;
-        
-    }
-    
-    public void insertionSort(int[] arr, int n){
-        int card = arr[n];
-        int j = n;
-        while(j>0 && card < arr[j-1]){
-            arr[j] = arr[j-1];
-            j--;
-        }
-        arr[j] = card;
+        if(maxHeap.size() == 0) return 0;
+        return maxHeap.remove();
     }
 }
