@@ -1,43 +1,31 @@
 class Solution {
-    public int helper(int left, int right, int[] arr, int[][] dp){
-        if(left > right){
-            return 0;
-        }
-        
-        if(left == right)
-            return arr[left];
-        
-        if(dp[left][right] != -1)
-            return dp[left][right];
-        
-//         int c1 = helper(left + 2, right, arr, dp);
-//         int c2 = helper(left + 1, right -1, arr, dp);
-//         int c3 = helper(left, right - 2, arr, dp);
-        
-//         return dp[left][right] = Math.max(arr[left] + Math.min(c1, c2), arr[right] + Math.min(c2, c3));
-        
-        return Math.max(arr[left] - helper(left+1, right, arr, dp), arr[right] - helper(left, right-1, arr, dp));
-    }
-    
-    public boolean PredictTheWinner(int[] nums) {    
-        int[][] dp = new int[nums.length+1][nums.length+1];
-        for(int i=0;i<nums.length;i++){
+    public boolean PredictTheWinner(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[n+1][n+1];
+        for(int i=0;i<n;i++){
             Arrays.fill(dp[i], -1);
         }
         
-//         int A = helper(0, nums.length-1, nums, dp);
+        int scoreA = game(0, n - 1, nums, dp);
         
-//         int total = 0;
-//         for(int val : nums){
-//             total += val;
-//         }
+        int total = 0;
+        for(int score : nums)
+            total += score;
         
-//         int B = total - A;
+        int scoreB = total - scoreA;
         
-//         return A >= B;
+        return scoreA >= scoreB;
+    }
+    
+    public int game(int l, int r, int[] nums, int[][] dp){
+        if(l > r)
+            return 0;
         
-        int diff = helper(0, nums.length-1, nums, dp);
+        if(l == r)
+            return nums[l];
         
-        return diff >= 0;
+        if(dp[l][r] != -1) return dp[l][r];
+        
+        return dp[l][r] = Math.max(nums[l] + Math.min(game(l+2, r, nums, dp), game(l+1, r-1, nums, dp)), nums[r] + Math.min(game(l+1, r-1, nums, dp), game(l, r-2, nums, dp)));
     }
 }
