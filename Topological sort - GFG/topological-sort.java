@@ -59,10 +59,8 @@ class Main {
 
 class Solution
 {
-    //Function to return list containing vertices in Topological order. 
-    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
-    {
-        // add your code here
+    
+    static int[] BFS(int V, ArrayList<ArrayList<Integer>> adj){
         int[] incoming = new int[V];
         
         for(int src=0; src<adj.size(); src++){
@@ -90,5 +88,33 @@ class Solution
         }
         
         return order;
+    }
+    
+    static int idx;
+    static int[] top;
+    static void DFS(int src, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+        if(vis[src]) return;
+        
+        vis[src] = true;
+        for(int nbr : adj.get(src)){
+            DFS(nbr, adj, vis);
+        }
+        
+        top[idx--] = src;
+    }
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        idx = V - 1;
+        top = new int[V];
+        boolean[] vis = new boolean[V];
+        
+        // MultiSource DFS
+        for(int i=0;i<V;i++){
+            DFS(i, adj, vis);
+        }
+        
+        return top;
     }
 }
