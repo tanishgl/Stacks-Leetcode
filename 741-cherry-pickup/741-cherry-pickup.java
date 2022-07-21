@@ -1,36 +1,37 @@
 class Solution {
     public int cherryPickup(int[][] grid) {
-        int n = grid.length;
-        int[][][] dp = new int[n][n][n];
-        // for(int i=0;i<n;i++){
-        //     for(int j=0;j<n;j++){
-        //         Arrays.fill(dp[i][j], -1);
-        //     }
-        // }
+        int n = grid.length, m = grid[0].length;
+        if(n == 1 && m == 1) return (grid[0][0] == -1) ? 0 : grid[0][0];
+        int[][][] dp = new int[n+1][m+1][n+1];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                Arrays.fill(dp[i][j], -1);
+            }
+        }
         
-        int max = helper(0,0,0,grid,dp);
-        return (max < 0) ? 0 : max;
+        Helper(0,0,0,grid,dp);
+        return (dp[0][0][0] < 0) ? 0 : dp[0][0][0];
     }
     
-    public int helper(int r1, int c1, int r2, int[][] grid, int[][][] dp){
-        int c2 = r1 + c1 - r2;
-        if(r1 >= grid.length || c1 >= grid.length || r2 >= grid.length || c2 >= grid.length || grid[r2][c2] == -1 || grid[r1][c1] == -1)
+    public int Helper(int r1, int c1, int r2, int[][] grid, int[][][] dp){
+        int c2 = r1 - r2 + c1;
+        if(r1 >= grid.length || r2 >= grid.length || c1 >= grid.length || c2 >= grid.length || grid[r1][c1] == -1 || grid[r2][c2] == -1)
             return Integer.MIN_VALUE;
         
-        if(r1 == grid.length-1 && c1 == grid.length-1)
+        if(r1 == grid.length -1 && c1 == grid.length - 1){
             return grid[r1][c1];
+        }
         
-        if(dp[r1][c1][r2] != 0) return dp[r1][c1][r2];
+        if(dp[r1][c1][r2] != -1) return dp[r1][c1][r2];
         
         int ans = grid[r1][c1] + grid[r2][c2];
-        if(r1 == r2 && c1 == c2)
-            ans -= grid[r1][c1];
+        if(r1 == r2 && c1 == c2) ans -= grid[r1][c1];
         
-        int ans1 = helper(r1 + 1, c1, r2 + 1, grid, dp);
-        int ans2 = helper(r1, c1 + 1, r2, grid, dp);
-        int ans3 = helper(r1 + 1, c1, r2, grid, dp);
-        int ans4 = helper(r1, c1 + 1, r2 + 1, grid, dp);
+        int a = Helper(r1, c1 + 1, r2, grid, dp);
+        int b = Helper(r1, c1 + 1, r2 + 1, grid, dp);
+        int c = Helper(r1 + 1, c1, r2, grid, dp);
+        int d = Helper(r1 + 1, c1, r2 + 1, grid, dp);
         
-        return dp[r1][c1][r2] = ans+Math.max(ans1,Math.max(ans2,(Math.max(ans3,ans4))));
+        return dp[r1][c1][r2] = Math.max(a,Math.max(b,Math.max(c,d))) + ans;
     }
 }
