@@ -1,8 +1,10 @@
 class Graph{
     ArrayList<Integer>[] adj;
+    int[] inc;
     
     Graph(int n){
-        this.adj = new ArrayList[n];
+        adj = new ArrayList[n];
+        inc = new int[n];
         for(int i=0;i<n;i++){
             adj[i] = new ArrayList<>();
         }
@@ -10,34 +12,32 @@ class Graph{
     
     public void addEdge(int src, int dest){
         adj[src].add(dest);
+        inc[dest]++;
     }
     
-    public int[] topo(int n){
-        int[] inc = new int[n];
-        for(int i=0;i<n;i++){
-            for(int nbr : adj[i]){
-                inc[nbr]++;
-            }
-        }
-        
+    public int[] topologicalSorting(int n){
+        int[] sort = new int[n];
         Queue<Integer> q = new ArrayDeque<>();
         for(int i=0;i<n;i++){
             if(inc[i] == 0) q.add(i);
         }
         
-        int[] ans = new int[n];
+        boolean[] vis = new boolean[n];
         int idx = 0;
         
         while(q.size()>0){
-            int p = q.remove();
-            ans[idx++] = p;
-            for(int nbr : adj[p]){
+            int node = q.remove();
+            if(vis[node]) continue;
+            vis[node] = true;
+            sort[idx++] = node;
+            for(int nbr : adj[node]){
                 inc[nbr]--;
-                if(inc[nbr] == 0) q.add(nbr);
+                if(inc[nbr] == 0)
+                    q.add(nbr);
             }
         }
         
-        return ans;
+        return sort;
     }
 }
 
@@ -45,12 +45,11 @@ class Solution {
     public int[] loudAndRich(int[][] richer, int[] quiet) {
         int n = quiet.length;
         Graph g = new Graph(n);
-        
         for(int[] edge : richer){
             g.addEdge(edge[1], edge[0]);
         }
         
-        int[] sorted = g.topo(n);
+        int[] sort = g.topologicalSorting(n);
         
         int[] ans = new int[n];
         for(int i=0;i<n;i++){
@@ -58,16 +57,13 @@ class Solution {
         }
         
         for(int i=n-1;i>=0;i--){
-            int node = sorted[i];
-            // System.out.println(node);
+            int poor = sort[i];
             for(int j=i+1;j<n;j++){
-                if(g.adj[node].contains(sorted[j]) && quiet[ans[sorted[j]]] < quiet[ans[node]]){
-                    ans[node] = ans[sorted[j]];
-                    // System.out.print(node + " -> " + sorted[j] + " ");
-                }
+                int rich = sort[j];
+                if(!g.adj[poor].contains(rich)) continue;
+                if(quiet[ans[rich]] < quiet[ans[poor]])
+                    ans[poor] = ans[rich];
             }
-            // System.out.println();
-            // System.out.println(node + " " + ans[node]);
         }
         
         return ans;
