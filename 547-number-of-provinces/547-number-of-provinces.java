@@ -1,49 +1,51 @@
-class Graph{
-    List<Integer>[] adj;
+class Solution {
     
-    Graph(int n){
-        adj = new ArrayList[n];
-        for(int i=0;i<n;i++){
-            adj[i] = new ArrayList<>();
+    public static class DSU {
+        int[] parent, rank;
+        
+        DSU(int n){
+            parent = new int[n];
+            rank = new int[n];
+            Arrays.fill(parent, -1);
+            Arrays.fill(rank, 1);
+        }
+        
+        public int find(int x){
+            if(parent[x] == -1) return x;
+            return parent[x] = find(parent[x]);
+        }
+        
+        public void union(int x, int y){
+            int px = find(x);
+            int py = find(y);
+            if(px == py) return;
+            
+            if(rank[px] >= rank[py]){
+                parent[py] = px;
+                rank[px] += rank[py];
+            } else {
+                parent[px] = py;
+                rank[py] += rank[px];
+            }
         }
     }
-    
-    public void addEdge(int src, int dest){
-        adj[src].add(dest);
-        adj[dest].add(src);
-    }
-    
-    public void DFS(int sr, boolean[] vis){
-        if(vis[sr]) return;
-        
-        vis[sr] = true;
-        for(int nbr : adj[sr])
-            DFS(nbr, vis);
-    }
-}
-
-class Solution {
     
     public int findCircleNum(int[][] isConnected) {
         int n = isConnected.length;
-        Graph g = new Graph(n);
+        DSU set = new DSU(n);
+        int component = n;
         
         for(int i=0;i<n;i++){
             for(int j=0;j<n;j++){
-                if(isConnected[i][j] == 1)
-                    g.addEdge(i, j);
+                if(isConnected[i][j] == 0 || i >= j)
+                    continue;
+                if(set.find(i) == set.find(j))
+                    continue;
+                set.union(i, j);
+                component--;
             }
         }
         
-        boolean[] vis = new boolean[n];
-        int count = 0;
-        for(int i=0;i<n;i++){
-            if(vis[i] == false){
-                g.DFS(i, vis);
-                count++;
-            }
-        }
-        
-        return count;
+        return component;
     }
 }
