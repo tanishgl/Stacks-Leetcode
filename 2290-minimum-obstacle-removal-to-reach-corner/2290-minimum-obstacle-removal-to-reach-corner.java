@@ -15,12 +15,35 @@ class Solution {
     
     public int minimumObstacles(int[][] grid) {
         int n = grid.length, m = grid[0].length;
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b) -> a.cost - b.cost);
-        pq.add(new Pair(0,0,0));
+//         PriorityQueue<Pair> pq = new PriorityQueue<>((a,b) -> a.cost - b.cost);
+//         pq.add(new Pair(0,0,0));
+        
+//         boolean[][] vis = new boolean[n][m];
+//         while(pq.size()>0){
+//             Pair curr = pq.remove();
+//             if(curr.x == n - 1 && curr.y == m - 1)
+//                 return curr.cost;
+//             if(vis[curr.x][curr.y]) continue;
+//             vis[curr.x][curr.y] = true;
+            
+//             for(int i=0;i<4;i++){
+//                 int nr = curr.x + x[i];
+//                 int nc = curr.y + y[i];
+                
+//                 if(nr < 0 || nc < 0 || nr >= n || nc >= m) continue;
+//                 pq.add(new Pair(nr, nc, curr.cost + grid[nr][nc]));
+//             }
+//         }
+        
+//         return -1;
+        
+        Deque<Pair> q = new ArrayDeque<>();
+        q.addFirst(new Pair(0,0,0));
         
         boolean[][] vis = new boolean[n][m];
-        while(pq.size()>0){
-            Pair curr = pq.remove();
+        
+        while(q.size()>0){
+            Pair curr = q.remove();
             if(curr.x == n - 1 && curr.y == m - 1)
                 return curr.cost;
             if(vis[curr.x][curr.y]) continue;
@@ -31,10 +54,15 @@ class Solution {
                 int nc = curr.y + y[i];
                 
                 if(nr < 0 || nc < 0 || nr >= n || nc >= m) continue;
-                pq.add(new Pair(nr, nc, curr.cost + grid[nr][nc]));
+                if(grid[nr][nc] == 0){
+                    q.addFirst(new Pair(nr, nc, curr.cost));
+                } else {
+                    q.addLast(new Pair(nr, nc, curr.cost + 1));
+                }
             }
         }
         
         return -1;
+        
     }
 }
