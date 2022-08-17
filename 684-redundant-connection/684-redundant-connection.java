@@ -1,12 +1,12 @@
 class Solution {
     
-    class DSU{
+    static class DSU {
         int[] parent, rank;
         
         DSU(int n){
             parent = new int[n];
-            rank = new int[n];
             Arrays.fill(parent, -1);
+            rank = new int[n];
             Arrays.fill(rank, 1);
         }
         
@@ -18,7 +18,7 @@ class Solution {
         public void union(int a, int b){
             a = find(a);
             b = find(b);
-            if(a == b) return;
+            
             if(rank[a] >= rank[b]){
                 parent[b] = a;
                 rank[a] += rank[b];
@@ -37,7 +37,7 @@ class Solution {
             int a = edge[0];
             int b = edge[1];
             if(sets.find(a) == sets.find(b))
-                return edge;
+                return new int[]{a,b};
             sets.union(a,b);
         }
         
